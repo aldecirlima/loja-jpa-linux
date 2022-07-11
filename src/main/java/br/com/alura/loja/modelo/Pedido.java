@@ -2,6 +2,7 @@ package br.com.alura.loja.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -24,9 +25,9 @@ public class Pedido {
 
 	@ManyToOne
 	private Cliente cliente;
-	
-	@OneToMany
-	private List<ItemPedido> itens;
+
+	@OneToMany(mappedBy = "pedido")
+	private List<ItemPedido> itens = new ArrayList<ItemPedido>();
 
 	public Pedido(Cliente cliente) {
 		this.cliente = cliente;
@@ -34,6 +35,14 @@ public class Pedido {
 
 	public Pedido() {
 	}
+	
+	public void adicionarItem(ItemPedido item) {
+//		Por conta do relacionamento bidirecional, setar o pedido ao qual o 
+//		item se refere ao pedido, conforme abaixo, depois adicionar o item no pedido.
+		item.setPedido(this);
+		this.itens.add(item);
+	}
+	
 
 	public Long getId() {
 		return id;
