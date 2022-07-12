@@ -1,6 +1,7 @@
 package br.com.alura.loja.testes;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -24,8 +25,18 @@ public class PerformanceConsultas {
 		PedidoDao pedidoDao = new PedidoDao(em);
 		Pedido pedido = pedidoDao.buscarPedidoComCliente(1L);
 		
+		ProdutoDao produtoDao = new ProdutoDao(em);
+		
+		List<Produto> produtos = produtoDao.buscarPorParametros(null, new BigDecimal("800"), null);
+		
 		em.close();
 		System.out.println(pedido.getCliente().getNome());
+		
+		for (Produto produto : produtos) {
+			System.out.println(produto.getNome());;
+		}
+		
+		
 
 	}
 
