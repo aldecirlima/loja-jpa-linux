@@ -57,5 +57,12 @@ public class PedidoDao {
 		return em.createQuery(jpql, RelatorioDeVendasVo.class).getResultList();
 		
 	}
+	
+//	As buscas no banco utilizando o "JOIN FETCH" carregam todos os relacionamentos, mesmo que na classe
+//	o relacionamento seja do tipo LAZY, como se virasse EAGER
+	public Pedido buscarPedidoComCliente(Long id) {
+		return em.createQuery("SELECT p FROM Pedido p JOIN FETCH p.cliente WHERE p.id = :id", Pedido.class)
+				.setParameter("id", id).getSingleResult();
+	}
 
 }
