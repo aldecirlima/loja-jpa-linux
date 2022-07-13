@@ -1,32 +1,44 @@
 package br.com.alura.loja.modelo;
 
+import java.util.Objects;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "categorias")
 public class Categoria {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String nome;
-	
-	public Categoria() {
-	}
-	
+
+	@EmbeddedId
+	private CategoriaId id;
+
 	public Categoria(String nome) {
-		this.nome = nome;
+		this.id = new CategoriaId(nome, "xpto");
+	}
+
+	public Categoria() {
 	}
 
 	public String getNome() {
-		return nome;
+		return this.id.getNome();
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Categoria other = (Categoria) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }

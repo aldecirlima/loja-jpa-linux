@@ -21,23 +21,22 @@ public class PerformanceConsultas {
 	public static void main(String[] args) {
 		popularBancoDeDados();
 		EntityManager em = JPAUtil.getEntityManager();
-		
+
 		PedidoDao pedidoDao = new PedidoDao(em);
 		Pedido pedido = pedidoDao.buscarPedidoComCliente(1L);
-		
+
 		ProdutoDao produtoDao = new ProdutoDao(em);
-		
+
 		List<Produto> produtos = produtoDao.buscarPorParametros(null, new BigDecimal("800"), null);
 //		List<Produto> produtos = produtoDao.buscarPorParametros("PS5", null, null);
-		
+
 		em.close();
 		System.out.println(pedido.getCliente().getNome());
-		
+
 		for (Produto produto : produtos) {
-			System.out.println(produto.getNome());;
+			System.out.println(produto.getNome());
+			;
 		}
-		
-		
 
 	}
 
