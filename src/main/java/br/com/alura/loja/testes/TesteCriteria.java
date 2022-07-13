@@ -1,43 +1,36 @@
 package br.com.alura.loja.testes;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import br.com.alura.loja.dao.CategoriaDao;
 import br.com.alura.loja.dao.ClienteDao;
-import br.com.alura.loja.dao.PedidoDao;
 import br.com.alura.loja.dao.ProdutoDao;
 import br.com.alura.loja.modelo.Categoria;
 import br.com.alura.loja.modelo.Cliente;
-import br.com.alura.loja.modelo.ItemPedido;
-import br.com.alura.loja.modelo.Pedido;
 import br.com.alura.loja.modelo.Produto;
 import br.com.alura.loja.util.JPAUtil;
 
-public class PerformanceConsultas {
+public class TesteCriteria {
 
 	public static void main(String[] args) {
 		popularBancoDeDados();
 		EntityManager em = JPAUtil.getEntityManager();
-		
-		PedidoDao pedidoDao = new PedidoDao(em);
-		Pedido pedido = pedidoDao.buscarPedidoComCliente(1L);
-		
+
 		ProdutoDao produtoDao = new ProdutoDao(em);
-		
-		List<Produto> produtos = produtoDao.buscarPorParametros(null, new BigDecimal("800"), null);
-//		List<Produto> produtos = produtoDao.buscarPorParametros("PS5", null, null);
-		
-		em.close();
-		System.out.println(pedido.getCliente().getNome());
-		
+
+//		List<Produto> produtos = produtoDao.buscarPorParametrosComCriteria(null, new BigDecimal("800"), null);
+		List<Produto> produtos = produtoDao.buscarPorParametrosComCriteria("PS5", null, LocalDate.now());
+
 		for (Produto produto : produtos) {
-			System.out.println(produto.getNome());;
+			System.out.println(produto.getNome());
+			;
 		}
-		
-		
+
+		em.close();
 
 	}
 
@@ -65,27 +58,6 @@ public class PerformanceConsultas {
 		produtoDao.cadastrar(videogame);
 		produtoDao.cadastrar(macbook);
 		clienteDao.cadastrar(cliente);
-
-		em.getTransaction().commit();
-
-		Produto produto = produtoDao.buscarPorId(1L);
-		Produto produto2 = produtoDao.buscarPorId(2L);
-		Produto produto3 = produtoDao.buscarPorId(3L);
-		cliente = clienteDao.buscarPorId(1l);
-
-		Pedido pedido = new Pedido(cliente);
-		pedido.adicionarItem(new ItemPedido(10, pedido, produto));
-		pedido.adicionarItem(new ItemPedido(40, pedido, produto2));
-
-		Pedido pedido2 = new Pedido(cliente);
-		pedido.adicionarItem(new ItemPedido(2, pedido, produto3));
-
-		PedidoDao pedidoDao = new PedidoDao(em);
-
-		em.getTransaction().begin();
-
-		pedidoDao.cadastrar(pedido);
-		pedidoDao.cadastrar(pedido2);
 
 		em.getTransaction().commit();
 		em.close();
