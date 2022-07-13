@@ -26,9 +26,13 @@ public class Cliente {
 	public Cliente() {
 
 	}
-	
+
 	public String getNome() {
 		return this.dadosPessoais.getNome();
+	}
+
+	public String getCpf() {
+		return this.dadosPessoais.getCpf();
 	}
 
 	public Long getId() {
